@@ -11,19 +11,25 @@ provider "azurerm" {
   # Configuration options
 }
 
-resource "azurerm_resource_group" "example" {
-  name     = "example-resources"
-  location = "West Europe"
+resource "azurerm_resource_group" "rg_backend" {
+  name     = var.rg_name
+  location = var.location
 }
 
-resource "azurerm_storage_account" "example" {
-  name                     = "storageaccountname"
-  resource_group_name      = azurerm_resource_group.example.name
-  location                 = azurerm_resource_group.example.location
+resource "azurerm_storage_account" "sa_backend" {
+  name                     = var.sa_name
+  resource_group_name      = azurerm_resource_group.rg_backend.name
+  location                 = azurerm_resource_group.rg_backend.location
   account_tier             = "Standard"
   account_replication_type = "GRS"
-
-  tags = {
-    environment = "staging"
-  }
 }
+
+resource "azurerm_storage_container" "sc_backend" {
+  name                  = var.sc_name
+  storage_account_name  = azurerm_storage_account.sa_backend.name
+  container_access_type = "private"
+}
+
+
+
+
