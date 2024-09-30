@@ -19,6 +19,13 @@ provider "azurerm" {
   }
 }
 
+# Random String
+resource "random_string" "random_string" {
+  length  = 8
+  special = false
+  upper = false
+}
+
 # Resource Group
 resource "azurerm_resource_group" "rg_backend" {
   name     = var.rg_name
@@ -27,7 +34,7 @@ resource "azurerm_resource_group" "rg_backend" {
 
 # Storage Account
 resource "azurerm_storage_account" "sa_backend" {
-  name                     = var.sa_name
+  name                     = "${lower(var.sa_name)}${random_string.random_string.result}"
   resource_group_name      = azurerm_resource_group.rg_backend.name
   location                 = azurerm_resource_group.rg_backend.location
   account_tier             = "Standard"
@@ -42,10 +49,10 @@ resource "azurerm_storage_container" "sc_backend" {
 }
 
 # Key Vault
-resource "azurerm_key_vault" "example" {
-  name                        = "examplekeyvault"
-  location                    = azurerm_resource_group.example.location
-  resource_group_name         = azurerm_resource_group.example.name
+resource "azurerm_key_vault" "kv_backend" {
+  name                        = "${lower(var.kv_name)}${random_string.random_string.result}"
+  location                    = azurerm_resource_group.rg_backend.location
+  resource_group_name         = azurerm_resource_group.rg_backend.name
   enabled_for_disk_encryption = true
   tenant_id                   = data.azurerm_client_config.current.tenant_id
   soft_delete_retention_days  = 7
@@ -58,17 +65,24 @@ resource "azurerm_key_vault" "example" {
     object_id = data.azurerm_client_config.current.object_id
 
     key_permissions = [
-      "Get",
+      "Get", "List", "Create",
     ]
 
     secret_permissions = [
-      "Get",
+      "Get", "Set", "List",
     ]
 
     storage_permissions = [
-      "Get",
+      "Get", "Set", "List",
     ]
   }
+}
+
+# Key Vault Secret
+resource "azurerm_key_vault_secret" "sa_backend_access_key" {
+  name         = "secret-sauce"
+  value        = "szechuan"
+  key_vault_id = azurerm_key_vault.example.id
 }
 
 

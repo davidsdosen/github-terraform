@@ -19,3 +19,8 @@ variable "sc_name" {
   description = "The name of the storage container"
   type        = string
 }
+
+variable "kv_name" {
+  description = "The name of the key vault"
+  type        = string
+}
