@@ -24,3 +24,9 @@ variable "kv_name" {
   description = "The name of the key vault"
   type        = string
 }
+
+variable "sa_backend_access_key_name" {
+  description = "The name of the storage account access key"
+  type        = string
+  
+}

@@ -80,9 +80,9 @@ resource "azurerm_key_vault" "kv_backend" {
 
 # Key Vault Secret
 resource "azurerm_key_vault_secret" "sa_backend_access_key" {
-  name         = "secret-sauce"
-  value        = "szechuan"
-  key_vault_id = azurerm_key_vault.example.id
+  name         = var.sa_backend_access_key_name
+  value        = azurerm_storage_account.sa_backend.primary_access_key
+  key_vault_id = azurerm_key_vault.kv_backend.id
 }
 
 
