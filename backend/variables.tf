@@ -1,7 +1,7 @@
 variable "sa_name" {
   description = "The name of the storage account"
   type        = string
-  
+
 }
 
 variable "rg_name" {
@@ -12,7 +12,7 @@ variable "rg_name" {
 variable "location" {
   description = "The location of the resource group"
   type        = string
-  default = "westeurope"
+  default     = "westeurope"
 }
 
 variable "sc_name" {
@@ -28,7 +28,7 @@ variable "kv_name" {
 variable "sa_backend_access_key_name" {
   description = "The name of the storage account access key"
   type        = string
-  
+
 }
 
 variable "subscription_id" {
