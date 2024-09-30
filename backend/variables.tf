@@ -30,3 +30,8 @@ variable "sa_backend_access_key_name" {
   type        = string
   
 }
+
+variable "subscription_id" {
+  description = "The subscription id"
+  type        = string
+}
